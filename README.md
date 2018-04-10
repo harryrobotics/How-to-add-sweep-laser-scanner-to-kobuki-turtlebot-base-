@@ -42,7 +42,7 @@ You need to add the laser to the robot model. Add the following right above the 
   </link>
  
  ```
-## 2. Edit ```3dsensor.launch```
+## 2. Edit ```3dsensor.launch``` - If you dont have a kinect sensor - skip this step
 The stock files will have your kinect's virutal laser scan publishing on the same topic that other tutorials want to use, and I would rather the laser data would come from the hokuyo laser. This can be prevented by changing the topic that the Kinect laser publishes on with the following:
 ```
 roscd to turtlebot_bringup/launch/
