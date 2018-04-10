@@ -1,4 +1,6 @@
-# How-to-add-sweep-laser-scanner-to-kobuki-turtlebot-base-
+# How to add sweep laser scanner to kobuki turtlebot base
+
+Modify based on http://wiki.ros.org/turtlebot/Tutorials/hydro/Adding%20a%20Hokuyo%20laser%20to%20your%20Turtlebot . I try to look for the tutorial to add sweep laser scanner but fail to do so. Therefore I refered to this article and do some tweeks to make it work. The article is created quite long time ago, hence some folders and filename have changed. You should be aware of that. Have fun !
 
 ## 1 .Edit your turtlebot description
 First, ```roscd``` to ```turtlebot_description``` folder. *Note: Depends on your base, you might need to edit the robot model urdf file at a difference folder.
