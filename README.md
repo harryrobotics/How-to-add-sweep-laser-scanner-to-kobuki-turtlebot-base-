@@ -2,6 +2,17 @@
 
 Modify based on http://wiki.ros.org/turtlebot/Tutorials/hydro/Adding%20a%20Hokuyo%20laser%20to%20your%20Turtlebot . I try to look for the tutorial to add sweep laser scanner but fail to do so. Therefore I refered to this article and do some tweeks to make it work. The article is created quite long time ago, hence some folders and filename have changed. You should be aware of that. Have fun !
 
+Firstly, we need to do some system configuration so that the system can read data from Lidar:
+Setup udev:
+```
+$ sudo echo 'KERNEL=="ttyUSB[0-9]*", MODE="0777"' >> /etc/udev/rules.d/50-laser.rules
+```
+Now plug in your laser. Check it's file permissions. They should be read/write/execute for all. The ls output should look similar to this:
+```
+$ ls -al /dev/ttyUSB0 
+crw-rw-rw- 1 root dialout 166, 0 May 11 23:36 /dev/ttyUSB0
+```
+
 ## 1 .Edit your turtlebot description
 First, ```roscd``` to ```turtlebot_description``` folder. *Note: Depends on your base, you might need to edit the robot model urdf file at a difference folder.
 
@@ -20,7 +31,7 @@ You need to add the laser to the robot model. Add the following right above the 
 
 ```
   <joint name="laser" type="fixed">
-    <origin xyz="-0.005 0.00 0.360" rpy="3.14159 0 0" />
+    <origin xyz="-0.005 0.00 0.43" rpy="3.14159 0 0" />
     <parent link="base_link" />
     <child link="base_laser_link" />
   </joint>
@@ -28,7 +39,7 @@ You need to add the laser to the robot model. Add the following right above the 
   <link name="base_laser_link">
     <visual>
       <geometry>
-        <box size="0.00 0.05 0.06" />
+        <box size="0.00 0.06 0.06" />
       </geometry>
       <material name="Green" />
     </visual>
@@ -71,6 +82,7 @@ At the bottom of the file, right before </launch>, add the following:
             <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
             <param name="serial_baudrate"     type="int"    value="115200"/>
             <param name="frame_id"            type="string" value="base_laser_link"/>
+            <param name="rotation_speed"      type="int" value="5"/>
     </node>
 
     <!-- run pointcloud_to_laserscan node -->
@@ -85,7 +97,7 @@ At the bottom of the file, right before </launch>, add the following:
 
             angle_min: -3.14 # -M_PI/2
             angle_max: 3.14 # M_PI/2
-            angle_increment: 0.001 # M_PI/360.0
+            angle_increment: 0.01745 # 2*M_PI/360.0
             scan_time: 0.1
             range_min: 0.0
             range_max: 40.0
